@@ -5,7 +5,6 @@ from aiobot_project.keyboards.menu import main_menu
 import aiohttp
 import asyncio
 
-
 router = Router()
 
 @router.message(Command("start"))
@@ -15,10 +14,17 @@ async def start_cmd(message: types.Message):
         reply_markup=main_menu
     )
 
-
 @router.message()
 async def message_handler(message: types.Message):
     text = message.text.strip()
+
+    # Если пользователь написал "Отправь фото" — отправляем картинку
+    if text.lower() == "отправь фото":
+        await message.answer_photo(
+            photo="https://placekitten.com/500/500",
+            caption="Вот котик 🐱"
+        )
+        return
 
     await message.answer("🤖 Думаю над ответом...")
 
